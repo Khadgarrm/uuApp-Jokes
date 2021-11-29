@@ -5,6 +5,7 @@ const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const { AppClient } = require("uu_appg01_server");
 const Errors = require("../api/errors/joke-errors.js");
 const { BinaryStoreError } = require("uu_appg01_binarystore");
+const path = require("path");
 
 const WARNINGS = {
   createUnsupportedKeys: {
@@ -14,6 +15,10 @@ const WARNINGS = {
   getUnsupportedKeys: {
     code: `${Errors.Get.UC_CODE}unsupportedKeys`,
   },
+
+  getImageDataUnsupportedKeys: {
+    code: `${Errors.GetImageData.UC_CODE}unsupportedKeys`
+  }
 };
 
 class JokeAbl {
@@ -22,6 +27,36 @@ class JokeAbl {
     this.mainDao = DaoFactory.getDao("jokesMain");
     this.jokeDao = DaoFactory.getDao("joke");
     this.jokeImageDao = DaoFactory.getDao("jokeImage");
+    this.jokeDao.createSchema();
+  }
+
+  //Get Image Data
+  async getImageData(awid, dtoIn) {
+    // hds 1
+    // hds 1.1
+    let validationResult = this.validator.validate("jokeGetImageDataDtoInType", dtoIn);
+    // hds 1.2, 1.3 // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getImageDataUnsupportedKeys.code,
+      Errors.GetImageData.InvalidDtoIn
+    );
+
+    // hds 2
+    let dtoOut = null;
+    try {
+      dtoOut = await this.jokeImageDao.getDataByCode(awid, dtoIn.image);
+    } catch (e) {
+      if (e.code === "uu-app-binarystore/objectNotFound") {
+        // A3
+        throw new Errors.GetImageData.JokeImageDoesNotExist({ uuAppErrorMap }, { image: dtoIn.image });
+      }
+      throw e;
+    }
+
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
+    return dtoOut;
   }
 
   //Create
@@ -60,7 +95,7 @@ class JokeAbl {
         jokeImage = await this.jokeImageDao.create({ awid }, dtoIn.image);
       } catch (e) {
         if (e instanceof BinaryStoreError) {
-          // 
+          //
           throw new Errors.Create.JokeImageDaoCreateFailed({ uuAppErrorMap }, e);
         }
         throw e;

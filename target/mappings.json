@@ -390,6 +390,11 @@
         "realization": "api/controllers/JokeDeleteController.delete",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "joke/getImageData": {
+        "realization": "api/controllers/JokeController.getImageData",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   },
