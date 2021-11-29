@@ -32,7 +32,7 @@
       },
       "joke/delte": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities"]
+        "profileList": ["Public"]
       }
     }
   }

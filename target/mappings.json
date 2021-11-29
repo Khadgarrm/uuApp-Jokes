@@ -386,8 +386,8 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
-      "JokeCmd": {
-        "realization": "api/controllers/JokeCmdController.jokeCmd",
+      "joke/delete": {
+        "realization": "api/controllers/JokeDeleteController.delete",
         "httpMethod": "POST",
         "type": "CMD"
       }

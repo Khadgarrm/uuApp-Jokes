@@ -35,6 +35,13 @@ const Create = {
       this.message = "While creating joke smth went wrong... .";
     }
   },
+  JokeImageDaoCreateFailed: class extends JokesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}createJokeImageFailed`;
+      this.message = "While creating joke smth went wrong... .";
+    }
+  },
 };
 
 const Get = {

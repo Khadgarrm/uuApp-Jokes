@@ -2,7 +2,9 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { AppClient } = require("uu_appg01_server");
 const Errors = require("../api/errors/joke-errors.js");
+const { BinaryStoreError } = require("uu_appg01_binarystore");
 
 const WARNINGS = {
   createUnsupportedKeys: {
@@ -19,6 +21,7 @@ class JokeAbl {
     this.validator = Validator.load();
     this.mainDao = DaoFactory.getDao("jokesMain");
     this.jokeDao = DaoFactory.getDao("joke");
+    this.jokeImageDao = DaoFactory.getDao("jokeImage");
   }
 
   //Create
@@ -51,8 +54,18 @@ class JokeAbl {
 
     // HDS 3
 
+    let jokeImage;
     if (dtoIn.image) {
-      // {...}
+      try {
+        jokeImage = await this.jokeImageDao.create({ awid }, dtoIn.image);
+      } catch (e) {
+        if (e instanceof BinaryStoreError) {
+          // 
+          throw new Errors.Create.JokeImageDaoCreateFailed({ uuAppErrorMap }, e);
+        }
+        throw e;
+      }
+      dtoIn.image = jokeImage.code;
     }
 
     // HDS 4

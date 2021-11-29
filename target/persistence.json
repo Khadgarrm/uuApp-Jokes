@@ -13,9 +13,6 @@
           "realization": "dao/JokeMongo",
           "maxNoI": 1000
         },
-        "jokeCmd": {
-          "realization": "dao/JokeCmdMongo"
-        },
         "sysAuditLogRecord": {
           "realization": "uu_appg01_auditlog:dao/SysAuditLogRecordMongo"
         },
@@ -55,6 +52,16 @@
         "sysProductLogo": {
           "realization": "uu_apprepresentationg01:dao/SysProductLogoMongo",
           "maxNoi": 512
+        }
+      }
+    },
+    "binary": {
+      "type": "uuAppBinaryStore",
+      "realization": "mongodb",
+      "schemaMap": {
+        "jokeImage": {
+          "realization": "dao/JokeImageMongo",
+          "maxNoi": 1024
         }
       }
     }

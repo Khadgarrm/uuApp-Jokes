@@ -217,6 +217,10 @@
       "getProductLogo": {
         "sysStateList": ["created", "active", "restricted"],
         "profileList": ["Public"]
+      },
+      "delete": {
+        "sysStateList": ["active"],
+        "profileList": []
       }
     },
     "permissionMap": []
@@ -404,7 +408,7 @@
         "sysStateList": ["active"],
         "profileList": ["Public"]
       },
-      "JokeCmd": {
+      "joke/delte": {
         "sysStateList": ["active"],
         "profileList": ["Public"]
       }

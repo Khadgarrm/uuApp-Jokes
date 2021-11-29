@@ -13,6 +13,16 @@
           "maxNoI": 1000
         }
       }
+    },
+    "binary": {
+      "type": "uuAppBinaryStore",
+      "realization": "mongodb",
+      "schemaMap": {
+        "jokeImage": {
+          "realization": "dao/JokeImageMongo",
+          "maxNoi": 1024
+        }
+      }
     }
   }
 }
